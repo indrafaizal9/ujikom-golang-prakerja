@@ -4,6 +4,7 @@ import (
 	"ujikom/database"
 	"ujikom/pkg/helpers"
 	"ujikom/pkg/models"
+	"ujikom/pkg/resources"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,18 +16,29 @@ func (a *AuthService) Login(c *gin.Context) {
 	db := database.DB
 	_ = db
 
-	User := models.User{}
-	helpers.StructBinder(c, &User)
+	request := models.Login{}
+	helpers.StructBinder(c, &request)
+	_, errCreate := helpers.ValidateStruct(request)
+	if errCreate != nil {
+		helpers.ResBadRequest(c, errCreate.Error())
+		return
+	}
 
-	password := User.Password
+	password := request.Password
 
-	err := db.Where("username = ? AND is_active IS TRUE", User.Username).First(&User).Error
+	userData := models.User{
+		Username: request.Username,
+		Password: request.Password,
+	}
+
+	var User models.User
+	err := db.Where("username = ? AND is_active IS TRUE", userData.Username).First(&User).Error
 	if err != nil {
 		helpers.ResUnauthorized(c, "Invalid Username or Password")
 		return
 	}
 
-	comparePassword := helpers.ComparePassword(User.Password, password)
+	comparePassword := helpers.ComparePassword(userData.Password, password)
 	if !comparePassword {
 		helpers.ResUnauthorized(c, "Invalid Username or Password")
 		return
@@ -47,26 +59,26 @@ func (a *AuthService) Register(c *gin.Context) {
 	db := database.DB
 	_ = db
 
-	User := models.UserCreate{}
-	helpers.StructBinder(c, &User)
+	request := models.UserCreate{}
+	helpers.StructBinder(c, &request)
 
-	_, errCreate := helpers.ValidateStruct(User)
+	_, errCreate := helpers.ValidateStruct(request)
 	if errCreate != nil {
 		helpers.ResBadRequest(c, errCreate.Error())
 		return
 	}
 
 	var user models.User
-	userExist := db.Where("username = ?", User.Username).First(&user).Error
+	userExist := db.Where("username = ?", request.Username).First(&user).Error
 	if userExist == nil {
 		helpers.ResBadRequest(c, "Username already exist")
 		return
 	}
 
 	userData := models.User{
-		Username: User.Username,
-		Password: helpers.HashPassword(User.Password),
-		Role:     User.Role,
+		Username: request.Username,
+		Password: helpers.HashPassword(request.Password),
+		Role:     request.Role,
 		IsActive: true,
 	}
 
@@ -76,5 +88,7 @@ func (a *AuthService) Register(c *gin.Context) {
 		return
 	}
 
-	helpers.ResCreated(c, userData)
+	userResource := models.UserResource{}
+	resources.UserMake(userData, &userResource)
+	helpers.ResCreated(c, userResource)
 }
