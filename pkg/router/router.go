@@ -2,6 +2,7 @@ package router
 
 import (
 	"ujikom/pkg/handlers"
+	"ujikom/pkg/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,6 +37,7 @@ func RecipeRouter(r *gin.RouterGroup) {
 	recipeHandler := handlers.RecipeHandler{}
 	recipes := r.Group("/recipes")
 	{
+		recipes.Use(middlewares.Authentication())
 		recipes.POST("/", recipeHandler.CreateRecipe)
 		// recipes.GET("/", recipeHandler.GetRecipes)
 		// recipes.GET("/:id", recipeHandler.GetRecipe)

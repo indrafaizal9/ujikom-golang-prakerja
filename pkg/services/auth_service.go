@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"ujikom/database"
 	"ujikom/pkg/helpers"
 	"ujikom/pkg/models"
@@ -14,21 +15,16 @@ type AuthService struct {
 
 func (a *AuthService) Login(c *gin.Context, request models.Login) {
 	db := database.DB
-	_ = db
-
-	userData := models.User{
-		Username: request.Username,
-		Password: request.Password,
-	}
 
 	var User models.User
-	err := db.Where("username = ? AND is_active IS TRUE", userData.Username).First(&User).Error
+	err := db.Where("username = ? AND is_active IS TRUE", request.Username).First(&User).Error
 	if err != nil {
+		fmt.Println("gagal mencari user")
 		helpers.ResUnauthorized(c, "Invalid Username or Password")
 		return
 	}
 
-	comparePassword := helpers.ComparePassword(userData.Password, request.Password)
+	comparePassword := helpers.ComparePassword(User.Password, request.Password)
 	if !comparePassword {
 		helpers.ResUnauthorized(c, "Invalid Username or Password")
 		return
@@ -47,7 +43,6 @@ func (a *AuthService) Login(c *gin.Context, request models.Login) {
 
 func (a *AuthService) Register(c *gin.Context, request models.UserCreate) {
 	db := database.DB
-	_ = db
 
 	var user models.User
 	userExist := db.Where("username = ?", request.Username).First(&user).Error
