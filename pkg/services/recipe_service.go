@@ -176,7 +176,7 @@ func (r *RecipeService) DeleteRecipe(c *gin.Context, id int) {
 		return
 	}
 
-	if recipe.UserID != c.MustGet("user").(models.User).ID {
+	if recipe.UserID != c.MustGet("user").(models.User).ID || c.MustGet("user").(models.User).Role != "admin"{
 		helpers.ResBadRequest(c, "You are not authorized to delete this recipe")
 		return
 	}

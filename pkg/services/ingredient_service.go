@@ -131,7 +131,7 @@ func (i *IngredientService) DeleteIngredient(c *gin.Context, recipeID, ingredien
 		return
 	}
 
-	if recipe.UserID != userData.ID {
+	if recipe.UserID != userData.ID || userData.Role != "admin" {
 		helpers.ResBadRequest(c, "You are not the owner of this recipe")
 		return
 	}
