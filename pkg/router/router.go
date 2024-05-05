@@ -13,6 +13,7 @@ func SetupRouter() *gin.Engine {
 	AuthRouter(r)
 	UserRouter(r)
 	RecipeRouter(r)
+	NonGroup(r)
 	return router
 }
 
@@ -45,4 +46,9 @@ func RecipeRouter(r *gin.RouterGroup) {
 		// recipes.PUT("/:id", recipeHandler.UpdateRecipe)
 		// recipes.DELETE("/:id", recipeHandler.DeleteRecipe)
 	}
+}
+
+func NonGroup(r *gin.RouterGroup) {
+	recipesHandeler := handlers.RecipeHandler{}
+	r.GET("/my-recipes", middlewares.Authentication(), recipesHandeler.MyRecipes)
 }

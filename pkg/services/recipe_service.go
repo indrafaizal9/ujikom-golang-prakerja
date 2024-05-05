@@ -58,3 +58,24 @@ func (r *RecipeService) CreateRecipe(c *gin.Context, request models.RecipeCreate
 	recipeResource.Ingredients = Ingredient
 	helpers.ResCreated(c, recipeResource)
 }
+
+func (r *RecipeService) MyRecipes(c *gin.Context) {
+	user := c.MustGet("user").(models.User)
+	db := database.DB
+
+	recipes := []models.Recipe{}
+	err := db.Where("user_id = ?", user.ID).Find(&recipes).Error
+	if err != nil {
+		helpers.ResBadRequest(c, err.Error())
+		return
+	}
+
+	recipeResources := []models.RecipeResource{}
+	for _, recipe := range recipes {
+		recipeResource := models.RecipeResource{}
+		resources.RecipeMake(recipe, &recipeResource)
+		recipeResources = append(recipeResources, recipeResource)
+	}
+
+	helpers.ResOK(c, recipeResources)
+}

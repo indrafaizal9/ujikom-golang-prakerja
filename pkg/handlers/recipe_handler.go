@@ -33,3 +33,7 @@ func (r *RecipeHandler) CreateRecipe(c *gin.Context) {
 
 	r.recipeService.CreateRecipe(c, request)
 }
+
+func (r *RecipeHandler) MyRecipes(c *gin.Context) {
+	r.recipeService.MyRecipes(c)
+}
