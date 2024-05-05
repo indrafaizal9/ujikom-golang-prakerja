@@ -7,6 +7,7 @@ import (
 	"ujikom/pkg/models"
 	"ujikom/pkg/resources"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -67,4 +68,23 @@ func (a *AuthService) Register(c *gin.Context, request models.UserCreate) {
 	userResource := models.UserResource{}
 	resources.UserMake(userData, &userResource)
 	helpers.ResCreated(c, userResource)
+}
+
+func (a *AuthService) Me(c *gin.Context) {
+	db := database.DB
+
+	userClaim := c.MustGet("userdata").(jwt.MapClaims)
+	userID := userClaim["id"].(float64)
+
+	var user models.User
+	var userResource models.UserResource
+
+	userExist := db.Where("id = ?", userID).First(&user).Error
+	if userExist != nil {
+		helpers.ResNotFound(c, "User not found")
+		return
+	}
+
+	resources.UserMake(user, &userResource)
+	helpers.ResOK(c, userResource)
 }

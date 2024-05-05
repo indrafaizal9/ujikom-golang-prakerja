@@ -20,6 +20,7 @@ func AuthRouter(r *gin.RouterGroup) {
 	authHandler := handlers.AuthHandler{}
 	r.POST("/login", authHandler.Login)
 	r.POST("/register", authHandler.Register)
+	r.GET("/me", middlewares.Authentication(), authHandler.Me)
 }
 
 func UserRouter(r *gin.RouterGroup) {

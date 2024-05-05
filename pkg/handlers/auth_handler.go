@@ -39,3 +39,7 @@ func (a *AuthHandler) Register(c *gin.Context) {
 
 	a.authService.Register(c, request)
 }
+
+func (a *AuthHandler) Me(c *gin.Context) {
+	a.authService.Me(c)
+}
