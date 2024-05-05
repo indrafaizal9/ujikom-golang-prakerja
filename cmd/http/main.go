@@ -1,9 +1,21 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"ujikom/database"
+	"ujikom/pkg/router"
+	"ujikom/config"
+)
+
+func Init(){
+	config, err := config.LoadConfig(".")
+	if err != nil {
+		panic(err)
+	}
+	database.Init(&config)
+}
 
 func main() {
-	gin := gin.Default()
-
-	gin.Run(":8080")
+	Init()
+	r := router.SetupRouter()
+	r.Run(":8080")
 }
