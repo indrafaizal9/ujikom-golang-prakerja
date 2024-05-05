@@ -5,12 +5,13 @@ import (
 	"strings"
 	"time"
 	"ujikom/config"
+	"ujikom/pkg/models"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
-func GenerateToken(id uint, email string) (string, error) {
+func GenerateToken(model models.User) (string, error) {
 	const TokenDuration = time.Hour * 24
 
 	appConfig, err := config.LoadConfig(".")
@@ -19,8 +20,9 @@ func GenerateToken(id uint, email string) (string, error) {
 	}
 
 	claim := jwt.MapClaims{
-		"id":       id,
-		"username": email,
+		"id":       model.ID,
+		"username": model.Username,
+		"role":     model.Role,
 		"iss":      "ujikom",
 		"iat":      jwt.TimeFunc().Unix(),
 		"exp":      jwt.TimeFunc().Add(TokenDuration).Unix(),

@@ -30,7 +30,7 @@ func (a *AuthService) Login(c *gin.Context, request models.Login) {
 		return
 	}
 
-	token, err := helpers.GenerateToken(User.ID, User.Username)
+	token, err := helpers.GenerateToken(User)
 	if err != nil {
 		helpers.ResInternalServerError(c, err.Error())
 		return
