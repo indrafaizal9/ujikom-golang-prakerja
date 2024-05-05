@@ -30,6 +30,12 @@ func Init(config *config.Config) {
 
 	DB.Logger = logger.Default.LogMode(logger.Info)
 	log.Println("Running Migrations...")
-	DB.AutoMigrate(&models.User{})
+	AutoMigrate()
 	log.Println("Migrations Completed!")
+}
+
+func AutoMigrate() {
+	DB.AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.Recipe{})
+	DB.AutoMigrate(&models.Ingredient{})
 }
