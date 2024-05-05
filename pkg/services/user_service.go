@@ -1,7 +1,6 @@
 package services
 
 import (
-	"strconv"
 	"ujikom/database"
 	"ujikom/pkg/helpers"
 	"ujikom/pkg/models"
@@ -13,26 +12,11 @@ import (
 type UserService struct {
 }
 
-func (u *UserService) UpdateUser(c *gin.Context) {
-	ID := c.Param("id")
-	parseID, err := strconv.Atoi(ID)
-	if err != nil {
-		helpers.ResBadRequest(c, err.Error())
-		return
-	}
+func (u *UserService) UpdateUser(c *gin.Context, parseID int, request models.UserUpdate) {
 	db := database.DB
 
-	request := models.UserUpdate{}
-	helpers.StructBinder(c, &request)
-
-	_, errCreate := helpers.ValidateStruct(request)
-	if errCreate != nil {
-		helpers.ResBadRequest(c, errCreate.Error())
-		return
-	}
-
 	var User models.User
-	err = db.Where("id = ?", parseID).First(&User).Error
+	err := db.Where("id = ?", parseID).First(&User).Error
 	if request.Username != "" {
 		User.Username = request.Username
 	}
@@ -61,8 +45,7 @@ func (u *UserService) UpdateUser(c *gin.Context) {
 	helpers.ResOK(c, userRersource)
 }
 
-func (u *UserService) DeleteUser(c *gin.Context) {
-	ID := c.Param("id")
+func (u *UserService) DeleteUser(c *gin.Context, ID int) {
 	db := database.DB
 
 	User := models.User{}
@@ -81,8 +64,7 @@ func (u *UserService) DeleteUser(c *gin.Context) {
 	helpers.ResOK(c, "User Deleted")
 }
 
-func (u *UserService) GetUser(c *gin.Context) {
-	ID := c.Param("id")
+func (u *UserService) GetUser(c *gin.Context, ID int) {
 	db := database.DB
 
 	User := models.User{}

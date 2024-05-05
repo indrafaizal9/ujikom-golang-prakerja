@@ -12,19 +12,9 @@ import (
 type AuthService struct {
 }
 
-func (a *AuthService) Login(c *gin.Context) {
+func (a *AuthService) Login(c *gin.Context, request models.Login) {
 	db := database.DB
 	_ = db
-
-	request := models.Login{}
-	helpers.StructBinder(c, &request)
-	_, errCreate := helpers.ValidateStruct(request)
-	if errCreate != nil {
-		helpers.ResBadRequest(c, errCreate.Error())
-		return
-	}
-
-	password := request.Password
 
 	userData := models.User{
 		Username: request.Username,
@@ -38,7 +28,7 @@ func (a *AuthService) Login(c *gin.Context) {
 		return
 	}
 
-	comparePassword := helpers.ComparePassword(userData.Password, password)
+	comparePassword := helpers.ComparePassword(userData.Password, request.Password)
 	if !comparePassword {
 		helpers.ResUnauthorized(c, "Invalid Username or Password")
 		return
@@ -55,18 +45,9 @@ func (a *AuthService) Login(c *gin.Context) {
 	})
 }
 
-func (a *AuthService) Register(c *gin.Context) {
+func (a *AuthService) Register(c *gin.Context, request models.UserCreate) {
 	db := database.DB
 	_ = db
-
-	request := models.UserCreate{}
-	helpers.StructBinder(c, &request)
-
-	_, errCreate := helpers.ValidateStruct(request)
-	if errCreate != nil {
-		helpers.ResBadRequest(c, errCreate.Error())
-		return
-	}
 
 	var user models.User
 	userExist := db.Where("username = ?", request.Username).First(&user).Error

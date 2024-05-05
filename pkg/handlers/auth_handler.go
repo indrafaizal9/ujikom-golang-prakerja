@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"ujikom/pkg/helpers"
+	"ujikom/pkg/models"
 	"ujikom/pkg/services"
 
 	"github.com/gin-gonic/gin"
@@ -15,9 +17,25 @@ func NewAuthHandler(authService services.AuthService) AuthHandler {
 }
 
 func (a *AuthHandler) Login(c *gin.Context) {
-	a.authService.Login(c)
+	request := models.Login{}
+	helpers.StructBinder(c, &request)
+	_, errCreate := helpers.ValidateStruct(request)
+	if errCreate != nil {
+		helpers.ResBadRequest(c, errCreate.Error())
+		return
+	}
+	a.authService.Login(c, request)
 }
 
 func (a *AuthHandler) Register(c *gin.Context) {
-	a.authService.Register(c)
+	request := models.UserCreate{}
+	helpers.StructBinder(c, &request)
+
+	_, errCreate := helpers.ValidateStruct(request)
+	if errCreate != nil {
+		helpers.ResBadRequest(c, errCreate.Error())
+		return
+	}
+
+	a.authService.Register(c, request)
 }
