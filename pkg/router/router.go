@@ -13,7 +13,7 @@ func SetupRouter() *gin.Engine {
 	AuthRouter(r)
 	UserRouter(r)
 	RecipeRouter(r)
-	NonGroup(r)
+	// NonGroup(r)
 	return router
 }
 
@@ -37,18 +37,28 @@ func UserRouter(r *gin.RouterGroup) {
 
 func RecipeRouter(r *gin.RouterGroup) {
 	recipeHandler := handlers.RecipeHandler{}
+	IngredientHandler := handlers.IngredientHandler{}
 	recipes := r.Group("/recipes")
 	{
 		recipes.Use(middlewares.Authentication())
 		recipes.POST("/", recipeHandler.CreateRecipe)
-		// recipes.GET("/", recipeHandler.GetRecipes)
-		// recipes.GET("/:id", recipeHandler.GetRecipe)
-		// recipes.PUT("/:id", recipeHandler.UpdateRecipe)
-		// recipes.DELETE("/:id", recipeHandler.DeleteRecipe)
+		recipes.GET("/", recipeHandler.GetRecipes)
+		recipes.GET("/:id", recipeHandler.GetRecipe)
+		recipes.PUT("/:id", recipeHandler.UpdateRecipe)
+		recipes.DELETE("/:id", recipeHandler.DeleteRecipe)
+
+		recipes.POST("/:id/ingredients", IngredientHandler.AddIngredient)
+		recipes.PUT("/:id/ingredients/:ingredient_id", IngredientHandler.UpdateIngredient)
+		recipes.DELETE("/:id/ingredients/:ingredient_id", IngredientHandler.DeleteIngredient)
 	}
 }
 
-func NonGroup(r *gin.RouterGroup) {
-	recipesHandeler := handlers.RecipeHandler{}
-	r.GET("/my-recipes", middlewares.Authentication(), recipesHandeler.MyRecipes)
+func PublicGroup(r *gin.RouterGroup) {
+	recipeHandler := handlers.RecipeHandler{}
+	publicGroup := r.Group("/public")
+	{
+		publicGroup.GET("/recipes", recipeHandler.GetPublicRecipes)
+		publicGroup.GET("/recipes/:id", recipeHandler.GetRecipe)
+		publicGroup.POST("/recipes/:id/like", recipeHandler.LikeRecipe)
+	}
 }
