@@ -6,6 +6,7 @@ func CollectionMake(collection models.Collection, collectionResource *models.Col
 	collectionResource.ID = collection.ID
 	collectionResource.UserID = collection.UserID
 	collectionResource.Name = collection.Name
+	collectionResource.Public = collection.Public
 	collectionResource.Description = collection.Description
 }
 

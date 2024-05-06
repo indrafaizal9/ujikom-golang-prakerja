@@ -15,11 +15,11 @@ type RecipeService struct {
 
 func (r *RecipeService) CreateRecipe(c *gin.Context, request models.RecipeCreate) {
 	db := database.DB
-	_ = db
+	user := c.MustGet("user").(models.User)
 
 	recipe := models.Recipe{
 		Name:           request.Name,
-		UserID:         c.MustGet("user").(models.User).ID,
+		UserID:         user.ID,
 		Description:    request.Description,
 		PrepTime:       request.PrepTime,
 		CookTime:       request.CookTime,
@@ -52,23 +52,17 @@ func (r *RecipeService) CreateRecipe(c *gin.Context, request models.RecipeCreate
 }
 
 func (r *RecipeService) GetRecipes(c *gin.Context) {
-	user := c.MustGet("user").(models.User)
 	db := database.DB
 
 	recipes := []models.Recipe{}
-	err := db.Where("user_id = ?", user.ID).Find(&recipes).Error
+	err := db.Find(&recipes).Error
 	if err != nil {
 		helpers.ResBadRequest(c, err.Error())
 		return
 	}
 
 	recipeResources := []models.RecipeResource{}
-	for _, recipe := range recipes {
-		recipeResource := models.RecipeResource{}
-		resources.RecipeMake(recipe, &recipeResource)
-		recipeResources = append(recipeResources, recipeResource)
-	}
-
+	resources.RecipeCollection(recipes, &recipeResources)
 	helpers.ResOK(c, recipeResources)
 }
 
@@ -86,7 +80,7 @@ func (r *RecipeService) GetRecipe(c *gin.Context, id int) {
 	resources.RecipeMake(recipe, &recipeResource)
 	IngredientService := IngredientService{}
 	Ingredient, err := IngredientService.IngredientsGet(c, recipe.ID)
-	
+
 	if err != nil {
 		helpers.ResBadRequest(c, err.Error())
 		return
@@ -97,6 +91,7 @@ func (r *RecipeService) GetRecipe(c *gin.Context, id int) {
 
 func (r *RecipeService) UpdateRecipe(c *gin.Context, id int, request models.RecipeUpdate) {
 	db := database.DB
+	currentUser := c.MustGet("user").(models.User)
 
 	recipe := models.Recipe{}
 	err := db.Where("id = ?", id).First(&recipe).Error
@@ -105,7 +100,7 @@ func (r *RecipeService) UpdateRecipe(c *gin.Context, id int, request models.Reci
 		return
 	}
 
-	if recipe.UserID != c.MustGet("user").(models.User).ID {
+	if recipe.UserID != currentUser.ID && currentUser.Role != "admin" {
 		helpers.ResBadRequest(c, "You are not authorized to update this recipe")
 		return
 	}
@@ -158,6 +153,7 @@ func (r *RecipeService) UpdateRecipe(c *gin.Context, id int, request models.Reci
 
 func (r *RecipeService) DeleteRecipe(c *gin.Context, id int) {
 	db := database.DB
+	currentUser := c.MustGet("user").(models.User)
 
 	recipe := models.Recipe{}
 	err := db.Where("id = ?", id).First(&recipe).Error
@@ -166,7 +162,7 @@ func (r *RecipeService) DeleteRecipe(c *gin.Context, id int) {
 		return
 	}
 
-	if recipe.UserID != c.MustGet("user").(models.User).ID || c.MustGet("user").(models.User).Role != "admin" {
+	if recipe.UserID != currentUser.ID && currentUser.Role != "admin" {
 		helpers.ResBadRequest(c, "You are not authorized to delete this recipe")
 		return
 	}
@@ -585,4 +581,19 @@ func (r *RecipeService) SearchRecipes(c *gin.Context, request models.SearchRecip
 	recipeResources := []models.RecipeResource{}
 	resources.RecipeCollection(recipes, &recipeResources)
 	helpers.ResOK(c, recipeResources)
+}
+
+func (r *RecipeService) GetPublicCollections(c *gin.Context) {
+	db := database.DB
+
+	collections := []models.Collection{}
+	err := db.Where("public = ?", true).Find(&collections).Error
+	if err != nil {
+		helpers.ResBadRequest(c, err.Error())
+		return
+	}
+
+	collectionResources := []models.CollectionResource{}
+	resources.CollectionCollection(collections, &collectionResources)
+	helpers.ResOK(c, collectionResources)
 }

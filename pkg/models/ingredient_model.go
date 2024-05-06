@@ -19,10 +19,10 @@ type IngredientCreate struct {
 }
 
 type IngredientUpdate struct {
-	Name        string `json:"name" form:"name" valid:"stringlength(3|50)"`
-	Description string `json:"description" form:"description" valid:"stringlength(3|255)"`
-	Amount      string `json:"amount" form:"amount" valid:"stringlength(3|50)"`
-	Unit        string `json:"unit" form:"unit" valid:"stringlength(3|50)"`
+	Name        string `json:"name" form:"name" valid:"stringlength(1|50)"`
+	Description string `json:"description" form:"description" valid:"stringlength(1|255)"`
+	Amount      string `json:"amount" form:"amount" valid:"stringlength(1|50)"`
+	Unit        string `json:"unit" form:"unit" valid:"stringlength(1|50)"`
 }
 
 type IngredientResource struct {

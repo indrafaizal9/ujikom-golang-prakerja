@@ -18,7 +18,7 @@ func (s *ProfileService) GetProfileByUserID(c *gin.Context, userID uint) {
 	profile := models.Profile{}
 	err := db.Where("user_id = ?", userID).First(&profile).Error
 	if err != nil {
-		helpers.ResBadRequest(c, err.Error())
+		helpers.ResNotFound(c, "You don't have a profile yet")
 		return
 	}
 
@@ -34,6 +34,22 @@ func (s *ProfileService) GetProfileByUserID(c *gin.Context, userID uint) {
 	resources.ProfileMake(profile, &profileResource)
 	profileResource.Usermame = user.Username
 	helpers.ResOK(c, profileResource)
+}
+
+func (s *ProfileService) GetAllProfiles(c *gin.Context) {
+	db := database.DB
+
+	profiles := []models.Profile{}
+	err := db.Find(&profiles).Error
+	if err != nil {
+		helpers.ResBadRequest(c, err.Error())
+		return
+	}
+
+	profileResources := []models.ProfileResource{}
+	resources.ProfileCollection(profiles, &profileResources)
+
+	helpers.ResOK(c, profileResources)
 }
 
 func (s *ProfileService) CreateProfile(c *gin.Context, userID uint) {
@@ -57,7 +73,7 @@ func (s *ProfileService) CreateProfile(c *gin.Context, userID uint) {
 		UserID:   userID,
 		FullName: request.FullName,
 		Email:    request.Email,
-		Gender:  request.Gender,
+		Gender:   request.Gender,
 		Address:  request.Address,
 		Photo:    request.Photo,
 	}
@@ -83,6 +99,7 @@ func (s *ProfileService) CreateProfile(c *gin.Context, userID uint) {
 
 func (s *ProfileService) UpdateProfile(c *gin.Context, userID uint) {
 	db := database.DB
+	currentUser := c.MustGet("user").(models.User)
 
 	profile := models.Profile{}
 	err := db.Where("user_id = ?", userID).First(&profile).Error
@@ -91,7 +108,7 @@ func (s *ProfileService) UpdateProfile(c *gin.Context, userID uint) {
 		return
 	}
 
-	if profile.UserID != userID {
+	if profile.UserID != userID && currentUser.Role != "admin" {
 		helpers.ResBadRequest(c, "You are not authorized to update this profile")
 		return
 	}
@@ -153,11 +170,26 @@ func (s *ProfileService) GetRecipesByUserID(c *gin.Context, userID uint) {
 	helpers.ResOK(c, recipeResources)
 }
 
-func (s *ProfileService) GetCollections(c *gin.Context, userID uint) {
+func (s *ProfileService) GetMyCollections(c *gin.Context, userID uint) {
 	db := database.DB
 
 	collections := []models.Collection{}
 	err := db.Where("user_id = ?", userID).Find(&collections).Error
+	if err != nil {
+		helpers.ResBadRequest(c, err.Error())
+		return
+	}
+
+	collectionResources := []models.CollectionResource{}
+	resources.CollectionCollection(collections, &collectionResources)
+	helpers.ResOK(c, collectionResources)
+}
+
+func (s *ProfileService) GetAllCollections(c *gin.Context) {
+	db := database.DB
+
+	collections := []models.Collection{}
+	err := db.Find(&collections).Error
 	if err != nil {
 		helpers.ResBadRequest(c, err.Error())
 		return
@@ -201,6 +233,7 @@ func (s *ProfileService) CreateCollection(c *gin.Context, userID uint, request m
 		UserID:      userID,
 		Name:        request.Name,
 		Description: request.Description,
+		Public:      request.Public,
 	}
 
 	err := db.Create(&collection).Error
@@ -224,7 +257,7 @@ func (s *ProfileService) UpdateCollection(c *gin.Context, userID uint, collectio
 		return
 	}
 
-	if collection.UserID != userID {
+	if collection.UserID != userID && c.MustGet("user").(models.User).Role != "admin" {
 		helpers.ResBadRequest(c, "You are not authorized to update this collection")
 		return
 	}
@@ -232,12 +265,11 @@ func (s *ProfileService) UpdateCollection(c *gin.Context, userID uint, collectio
 	if request.Name != "" {
 		collection.Name = request.Name
 	}
-	if request.Public {
-		collection.Public = request.Public
-	}
+
 	if request.Description != "" {
 		collection.Description = request.Description
 	}
+	collection.Public = request.Public
 
 	err = db.Save(&collection).Error
 	if err != nil {
@@ -260,7 +292,7 @@ func (s *ProfileService) DeleteCollection(c *gin.Context, userID uint, collectio
 		return
 	}
 
-	if collection.UserID != userID {
+	if collection.UserID != userID && c.MustGet("user").(models.User).Role != "admin" {
 		helpers.ResBadRequest(c, "You are not authorized to delete this collection")
 		return
 	}

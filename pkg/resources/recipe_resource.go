@@ -5,6 +5,7 @@ import "ujikom/pkg/models"
 func RecipeMake(source models.Recipe, target *models.RecipeResource) {
 	target.ID = source.ID
 	target.Name = source.Name
+	target.UserID = source.UserID
 	target.Description = source.Description
 	target.PrepTime = source.PrepTime + " minutes"
 	target.CookTime = source.CookTime + " minutes"

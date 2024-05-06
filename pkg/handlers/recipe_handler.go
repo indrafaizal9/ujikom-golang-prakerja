@@ -241,3 +241,7 @@ func (r *RecipeHandler) SearchRecipe(c *gin.Context) {
 
 	r.recipeService.SearchRecipes(c, searchModel)
 }
+
+func (r *RecipeHandler) GetPublicCollections(c *gin.Context) {
+	r.recipeService.GetPublicCollections(c)
+}

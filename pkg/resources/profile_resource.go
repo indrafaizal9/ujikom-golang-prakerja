@@ -11,3 +11,11 @@ func ProfileMake(profile models.Profile, profileResource *models.ProfileResource
 	profileResource.Address = profile.Address
 	profileResource.Photo = profile.Photo
 }
+
+func ProfileCollection(profiles []models.Profile, profileResources *[]models.ProfileResource) {
+	for _, profile := range profiles {
+		profileResource := models.ProfileResource{}
+		ProfileMake(profile, &profileResource)
+		*profileResources = append(*profileResources, profileResource)
+	}
+}

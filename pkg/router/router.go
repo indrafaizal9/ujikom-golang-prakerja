@@ -31,19 +31,21 @@ func UserProfile(r *gin.RouterGroup) {
 	{
 		profile.Use(middlewares.Authentication())
 		profile.GET("/", profileHandler.GetMyProfile)
+		profile.GET("/all", middlewares.AllowedRole("admin"), profileHandler.GetAllProfiles)
 		profile.POST("/", profileHandler.CreateMyProfile)
 		profile.PUT("/", profileHandler.UpdateMyProfile)
-		profile.GET("/my-recipes", profileHandler.GetMyRecipes)
+		// profile.GET("/my-recipes", profileHandler.GetMyRecipes)
 
-		profile.GET("/collection", profileHandler.GetCollections)
+		profile.GET("/collection/all", middlewares.AllowedRole("admin"), profileHandler.GetAllCollections)
+		profile.GET("/collection", profileHandler.GetMyCollections)
 		profile.GET("/collection/:id", profileHandler.GetCollection)
 		profile.POST("/collection", profileHandler.CreateCollection)
 		profile.PUT("/collection/:id", profileHandler.UpdateCollection)
 		profile.DELETE("/collection/:id", profileHandler.DeleteCollection)
 
 		// profile.GET("/stat/total-like", profileHandler.GetTotalLike)
-	// 	profile.GET("/stat/total-recipe", profileHandler.GetTotalRecipe)
-	// 	profile.GET("/stat/total-review", profileHandler.GetTotalReview)
+		// 	profile.GET("/stat/total-recipe", profileHandler.GetTotalRecipe)
+		// 	profile.GET("/stat/total-review", profileHandler.GetTotalReview)
 
 	}
 }
@@ -52,7 +54,7 @@ func UserRouter(r *gin.RouterGroup) {
 	userHandler := handlers.UserHandler{}
 	users := r.Group("/users")
 	{
-		users.Use(middlewares.Authentication())
+		users.Use(middlewares.Authentication(), middlewares.AllowedRole("admin"))
 		users.GET("/", userHandler.GetUsers)
 		users.GET("/:id", userHandler.GetUser)
 		users.PUT("/:id", userHandler.UpdateUser)
@@ -67,11 +69,13 @@ func UserRouter(r *gin.RouterGroup) {
 func RecipeRouter(r *gin.RouterGroup) {
 	recipeHandler := handlers.RecipeHandler{}
 	IngredientHandler := handlers.IngredientHandler{}
+	profileHandler := handlers.ProfileHandler{}
 	recipes := r.Group("/recipes")
 	{
-		recipes.Use(middlewares.Authentication(), middlewares.AllowedRole("admin"))
+		recipes.Use(middlewares.Authentication())
 		recipes.POST("/", recipeHandler.CreateRecipe)
-		recipes.GET("/", recipeHandler.GetRecipes)
+		recipes.GET("/my", profileHandler.GetMyRecipes)
+		recipes.GET("/", middlewares.AllowedRole("admin"), recipeHandler.GetRecipes)
 		recipes.GET("/:id", recipeHandler.GetRecipe)
 		recipes.PUT("/:id", recipeHandler.UpdateRecipe)
 		recipes.DELETE("/:id", recipeHandler.DeleteRecipe)
@@ -108,6 +112,6 @@ func PublicGroup(r *gin.RouterGroup) {
 		publicGroup.GET("/recipes/:id", recipeHandler.GetRecipe)
 		publicGroup.GET("/recipes/:id/reviews", recipeHandler.GetReviews)
 		publicGroup.GET("/search", recipeHandler.SearchRecipe)
-		// publicGroup.GET("/collections", recipeHandler.GetPublicCollections)
+		publicGroup.GET("/collections", recipeHandler.GetPublicCollections)
 	}
 }

@@ -11,10 +11,8 @@ type Review struct {
 }
 
 type ReviewCreate struct {
-	UserID   uint   `json:"user_id" form:"user_id" valid:"required,numeric"`
-	RecipeID uint   `json:"recipe_id" form:"recipe_id" valid:"required,numeric"`
-	Rating   int    `json:"rating" form:"rating" valid:"required,range(1|5)"`
-	Review   string `json:"review" form:"review" valid:"required,stringlength(10|255)"`
+	Rating int    `json:"rating" form:"rating" valid:"required,range(1|5)"`
+	Review string `json:"review" form:"review" valid:"required,stringlength(10|255)"`
 }
 
 type ReviewUpdate struct {

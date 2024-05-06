@@ -17,6 +17,10 @@ func NewProfileHandler(profileService services.ProfileService) ProfileHandler {
 	return ProfileHandler{profileService: profileService}
 }
 
+func (h *ProfileHandler) GetAllProfiles(c *gin.Context) {
+	h.profileService.GetAllProfiles(c)
+}
+
 func (h *ProfileHandler) GetMyProfile(c *gin.Context) {
 	user := c.MustGet("user").(models.User)
 	h.profileService.GetProfileByUserID(c, user.ID)
@@ -32,14 +36,18 @@ func (h *ProfileHandler) UpdateMyProfile(c *gin.Context) {
 	h.profileService.UpdateProfile(c, user.ID)
 }
 
+func (h *ProfileHandler) GetAllCollections(c *gin.Context) {
+	h.profileService.GetAllCollections(c)
+}
+
 func (h *ProfileHandler) GetMyRecipes(c *gin.Context) {
 	user := c.MustGet("user").(models.User)
 	h.profileService.GetRecipesByUserID(c, user.ID)
 }
 
-func (h *ProfileHandler) GetCollections(c *gin.Context) {
+func (h *ProfileHandler) GetMyCollections(c *gin.Context) {
 	user := c.MustGet("user").(models.User)
-	h.profileService.GetCollections(c, user.ID)
+	h.profileService.GetMyCollections(c, user.ID)
 }
 
 func (h *ProfileHandler) GetCollection(c *gin.Context) {

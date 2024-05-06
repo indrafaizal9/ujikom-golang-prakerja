@@ -29,12 +29,11 @@ func Init(config *config.Config) {
 	}
 
 	DB.Logger = logger.Default.LogMode(logger.Info)
-	log.Println("Running Migrations...")
-	AutoMigrate()
-	log.Println("Migrations Completed!")
+	// AutoMigrate()
 }
 
 func AutoMigrate() {
+	log.Println("Running Migrations...")
 	DB.AutoMigrate(&models.User{})
 	DB.AutoMigrate(&models.Recipe{})
 	DB.AutoMigrate(&models.Ingredient{})
@@ -45,4 +44,5 @@ func AutoMigrate() {
 	DB.AutoMigrate(&models.MealType{})
 	DB.AutoMigrate(&models.Review{})
 	DB.AutoMigrate(&models.Likes{})
+	log.Println("Migrations Completed!")
 }
