@@ -14,7 +14,7 @@ import (
 func GenerateToken(model models.User) (string, error) {
 	const TokenDuration = time.Hour * 24
 
-	appConfig, err := config.LoadConfig(".")
+	appConfig, err := config.LoadConfig()
 	if err != nil {
 		return "", err
 	}

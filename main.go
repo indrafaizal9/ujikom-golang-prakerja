@@ -1,13 +1,13 @@
 package main
 
 import (
+	"ujikom/config"
 	"ujikom/database"
 	"ujikom/pkg/router"
-	"ujikom/config"
 )
 
-func Init(){
-	config, err := config.LoadConfig(".")
+func Init() {
+	config, err := config.LoadConfig()
 	if err != nil {
 		panic(err)
 	}
