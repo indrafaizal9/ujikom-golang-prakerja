@@ -71,3 +71,8 @@ type RecipeResource struct {
 	UpdatedAt      string               `json:"updated_at"`
 	Ingredients    []IngredientResource `json:"ingredients"`
 }
+
+type SearchRecipe struct {
+	Name string `json:"name" form:"name" valid:"stringlength(3|50)"`
+	Tags string `json:"tags" form:"tags" valid:"stringlength(3|255)"`
+}

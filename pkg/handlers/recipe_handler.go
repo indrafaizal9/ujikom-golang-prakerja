@@ -225,3 +225,16 @@ func (r *RecipeHandler) DeleteLabel(c *gin.Context) {
 
 	r.recipeService.DeleteLabel(c, parseID)
 }
+
+func (r *RecipeHandler) SearchRecipe(c *gin.Context) {
+	searchModel := models.SearchRecipe{}
+	helpers.StructBinder(c, &searchModel)
+
+	_, errCreate := helpers.ValidateStruct(searchModel)
+	if errCreate != nil {
+		helpers.ResBadRequest(c, errCreate.Error())
+		return
+	}
+
+	r.recipeService.SearchRecipes(c, searchModel)
+}

@@ -107,6 +107,7 @@ func PublicGroup(r *gin.RouterGroup) {
 		publicGroup.GET("/recipes", recipeHandler.GetPublicRecipes)
 		publicGroup.GET("/recipes/:id", recipeHandler.GetRecipe)
 		publicGroup.GET("/recipes/:id/reviews", recipeHandler.GetReviews)
+		publicGroup.GET("/search", recipeHandler.SearchRecipe)
 		// publicGroup.GET("/collections", recipeHandler.GetPublicCollections)
 	}
 }

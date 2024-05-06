@@ -447,7 +447,6 @@ func (r *RecipeService) AddToCollection(c *gin.Context, recipeID int, collection
 		return
 	}
 
-	// Check if recipe already in collection
 	recipeCollection := models.CollectionRecipesPivot{}
 	err = db.Where("recipe_id = ? AND collection_id = ?", recipe.ID, collection.ID).First(&recipeCollection).Error
 	if err == nil {
@@ -565,4 +564,19 @@ func (r *RecipeService) DeleteLabel(c *gin.Context, id int) {
 	}
 
 	helpers.ResOK(c, "Label deleted successfully")
+}
+
+func (r *RecipeService) SearchRecipes(c *gin.Context, request models.SearchRecipe) {
+	db := database.DB
+
+	recipes := []models.Recipe{}
+	err := db.Where("name LIKE ? OR tag LIKE", "%"+request.Name+"%", "%"+request.Tags+"%").Find(&recipes).Error
+	if err != nil {
+		helpers.ResBadRequest(c, err.Error())
+		return
+	}
+
+	recipeResources := []models.RecipeResource{}
+	resources.RecipeCollection(recipes, &recipeResources)
+	helpers.ResOK(c, recipeResources)
 }
