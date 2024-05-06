@@ -30,6 +30,14 @@ atau bisa dengan
 go run cmd/http/main.go
 ```
 
+# Github Link
+
+```bash
+https://github.com/faizalindra/ujikom-golang-prakerja
+```
+
 # Deploy Link
 
-url :
+```bash
+"belum ada, nanti bisa di cek di github"
+```
