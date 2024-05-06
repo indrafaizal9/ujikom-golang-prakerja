@@ -13,14 +13,13 @@ type Config struct {
 	AppSecret      string `mapstructure:"APP_SECRET"`
 }
 
-func LoadConfig() (config Config, err error) {
-	viper.SetConfigFile("ENV")
-	viper.SetConfigType("env")
-	viper.AutomaticEnv()
-	err = viper.ReadInConfig()
-	if err != nil {
-		return
+func LoadConfig() config Config, err error {
+	return Config{
+		DBHost        : "aws-0-ap-southeast-1.pooler.supabase.com"
+		DBUserName    : "postgres.kibrvkytbvzpxxssufff" 
+		DBUserPassword: "postgressujikom" 
+		DBName        : "postgres" 
+		DBPort        : "5432" 
+		AppSecret     : "qweqwe" 
 	}
-	err = viper.Unmarshal(&config)
-	return
 }
