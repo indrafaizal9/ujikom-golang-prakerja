@@ -9,13 +9,13 @@ type Config struct {
 	AppSecret      string `mapstructure:"APP_SECRET"`
 }
 
-func LoadConfig() config Config, err error {
+func LoadConfig() (config Config) {
 	return Config{
-		DBHost        : "aws-0-ap-southeast-1.pooler.supabase.com"
-		DBUserName    : "postgres.kibrvkytbvzpxxssufff" 
-		DBUserPassword: "postgressujikom" 
-		DBName        : "postgres" 
-		DBPort        : "5432" 
-		AppSecret     : "qweqwe" 
+		DBHost:         "aws-0-ap-southeast-1.pooler.supabase.com",
+		DBUserName:     "postgres.kibrvkytbvzpxxssufff",
+		DBUserPassword: "postgressujikom",
+		DBName:         "postgres",
+		DBPort:         "5432",
+		AppSecret:      "qweqwe",
 	}
 }
