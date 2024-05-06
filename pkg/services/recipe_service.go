@@ -456,8 +456,8 @@ func (r *RecipeService) AddToCollection(c *gin.Context, recipeID int, collection
 	}
 
 	recipeCollection = models.CollectionRecipesPivot{
-		RecipeID:     recipeID,
-		CollectionID: collection.ID,
+		RecipeID:     uint(recipeID),
+		CollectionID: uint(collection.ID),
 	}
 
 	err = db.Create(&recipeCollection).Error

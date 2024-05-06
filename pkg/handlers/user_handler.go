@@ -10,11 +10,11 @@ import (
 )
 
 type UserHandler struct {
-	userHandler services.UserService
+	userService services.UserService
 }
 
-func NewUserHandler(userHandler services.UserService) UserHandler {
-	return UserHandler{userHandler: userHandler}
+func NewUserHandler(userService services.UserService) UserHandler {
+	return UserHandler{userService: userService}
 }
 
 func (u *UserHandler) UpdateUser(c *gin.Context) {
@@ -32,7 +32,7 @@ func (u *UserHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	u.userHandler.UpdateUser(c, parseID, request)
+	u.userService.UpdateUser(c, parseID, request)
 }
 
 func (u *UserHandler) DeleteUser(c *gin.Context) {
@@ -42,7 +42,7 @@ func (u *UserHandler) DeleteUser(c *gin.Context) {
 		return
 	}
 
-	u.userHandler.DeleteUser(c, parseID)
+	u.userService.DeleteUser(c, parseID)
 }
 
 func (u *UserHandler) GetUser(c *gin.Context) {
@@ -51,9 +51,27 @@ func (u *UserHandler) GetUser(c *gin.Context) {
 		helpers.ResBadRequest(c, err.Error())
 		return
 	}
-	u.userHandler.GetUser(c, parseID)
+	u.userService.GetUser(c, parseID)
 }
 
 func (u *UserHandler) GetUsers(c *gin.Context) {
-	u.userHandler.GetUsers(c)
+	u.userService.GetUsers(c)
+}
+
+func (u *UserHandler) GetRecipesByUser(c *gin.Context) {
+	parseID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		helpers.ResBadRequest(c, err.Error())
+		return
+	}
+	u.userService.GetRecipesByUser(c, parseID)
+}
+
+func (u *UserHandler) GetReviewsByUser(c *gin.Context) {
+	parseID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		helpers.ResBadRequest(c, err.Error())
+		return
+	}
+	u.userService.GetReviewsByUser(c, parseID)
 }

@@ -20,3 +20,17 @@ func RoleUser() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+func AllowedRole(role string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		userData := c.MustGet("userdata").(jwt.MapClaims)
+		userRole := userData["role"].(string)
+
+		if userRole != role {
+			helpers.ResUnauthorized(c, "Unauthorized")
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}

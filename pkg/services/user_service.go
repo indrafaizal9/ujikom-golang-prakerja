@@ -102,3 +102,45 @@ func (u *UserService) GetUsers(c *gin.Context) {
 
 	helpers.ResOK(c, userResource)
 }
+
+func (u *UserService) GetRecipesByUser(c *gin.Context, ID int) {
+	db := database.DB
+
+	var Recipes []models.Recipe
+	err := db.Where("user_id = ?", ID).Find(&Recipes).Error
+	if err != nil {
+		helpers.ResInternalServerError(c, err.Error())
+		return
+	}
+
+	if len(Recipes) == 0 {
+		helpers.ResOK(c, nil)
+		return
+	}
+
+	recipeResource := []models.RecipeResource{}
+	resources.RecipeCollection(Recipes, &recipeResource)
+
+	helpers.ResOK(c, recipeResource)
+}
+
+func (u *UserService) GetReviewsByUser(c *gin.Context, ID int) {
+	db := database.DB
+
+	var Reviews []models.Review
+	err := db.Where("user_id = ?", ID).Find(&Reviews).Error
+	if err != nil {
+		helpers.ResInternalServerError(c, err.Error())
+		return
+	}
+
+	if len(Reviews) == 0 {
+		helpers.ResOK(c, nil)
+		return
+	}
+
+	reviewResource := []models.ReviewResource{}
+	resources.ReviewCollection(Reviews, &reviewResource)
+
+	helpers.ResOK(c, reviewResource)
+}

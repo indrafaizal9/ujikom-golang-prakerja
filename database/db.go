@@ -38,4 +38,11 @@ func AutoMigrate() {
 	DB.AutoMigrate(&models.User{})
 	DB.AutoMigrate(&models.Recipe{})
 	DB.AutoMigrate(&models.Ingredient{})
+	DB.AutoMigrate(&models.Collection{})
+	DB.AutoMigrate(&models.Profile{})
+	DB.AutoMigrate(&models.CollectionRecipesPivot{})
+	DB.AutoMigrate(&models.TagsAndLabels{})
+	DB.AutoMigrate(&models.MealType{})
+	DB.AutoMigrate(&models.Review{})
+	DB.AutoMigrate(&models.Likes{})
 }

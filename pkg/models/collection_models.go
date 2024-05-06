@@ -4,7 +4,7 @@ type Collection struct {
 	ID          int    `json:"id"`
 	Name        string `json:"name"`
 	Public      bool   `json:"public"`
-	UserID      int    `json:"user_id"`
+	UserID      uint   `json:"user_id"`
 	Description string `json:"description"`
 }
 
@@ -20,7 +20,17 @@ type CollectionUpdate struct {
 	Description string `json:"description" form:"description" valid:"string,length(1|255)"`
 }
 
+type CollectionResource struct {
+	ID          int              `json:"id"`
+	Name        string           `json:"name"`
+	Public      bool             `json:"public"`
+	UserID      uint             `json:"user_id"`
+	Description string           `json:"description"`
+	RecipeCount uint             `json:"recipe_count"`
+	Recipes     []RecipeResource `json:"recipes"`
+}
+
 type CollectionRecipesPivot struct {
-	CollectionID int `json:"collection_id" gorm:"foreignkey:ID;association_foreignkey:ID"`
-	RecipeID     int `json:"recipe_id" gorm:"foreignkey:ID;association_foreignkey:ID"`
+	CollectionID uint `json:"collection_id" gorm:"foreignkey:ID;association_foreignkey:ID"`
+	RecipeID     uint `json:"recipe_id" gorm:"foreignkey:ID;association_foreignkey:ID"`
 }

@@ -26,38 +26,41 @@ func AuthRouter(r *gin.RouterGroup) {
 }
 
 func UserProfile(r *gin.RouterGroup) {
-	// profileHandler := handlers.ProfileHandler{}
-	// profile := r.Group("/profile")
-	// {
-	// 	profile.Use(middlewares.Authentication())
-	// 	profile.GET("/my-profile", profileHandler.GetMyProfile)
-	// 	profile.PUT("/my-profile", profileHandler.UpdateMyProfile)
-	// 	profile.GET("/my-recipes", profileHandler.GetMyRecipes)
+	profileHandler := handlers.ProfileHandler{}
+	profile := r.Group("/profile")
+	{
+		profile.Use(middlewares.Authentication())
+		profile.GET("/", profileHandler.GetMyProfile)
+		profile.POST("/", profileHandler.CreateMyProfile)
+		profile.PUT("/", profileHandler.UpdateMyProfile)
+		profile.GET("/my-recipes", profileHandler.GetMyRecipes)
 
-	// 	profile.GET("/collection", profileHandler.GetCollections)
-	// 	profile.POST("/collection", profileHandler.CreateCollection)
-	// 	profile.PUT("/collection/:id", profileHandler.UpdateCollection)
-	// 	profile.DELETE("/collection/:id", profileHandler.DeleteCollection)
+		profile.GET("/collection", profileHandler.GetCollections)
+		profile.GET("/collection/:id", profileHandler.GetCollection)
+		profile.POST("/collection", profileHandler.CreateCollection)
+		profile.PUT("/collection/:id", profileHandler.UpdateCollection)
+		profile.DELETE("/collection/:id", profileHandler.DeleteCollection)
 
-	// 	profile.GET("/total-like", userHandler.GetTotalLike)
-	// 	profile.GET("/total-recipe", userHandler.GetTotalRecipe)
-	// 	profile.GET("/total-review", userHandler.GetTotalReview)
+		// profile.GET("/stat/total-like", profileHandler.GetTotalLike)
+	// 	profile.GET("/stat/total-recipe", profileHandler.GetTotalRecipe)
+	// 	profile.GET("/stat/total-review", profileHandler.GetTotalReview)
 
-	// }
+	}
 }
 
 func UserRouter(r *gin.RouterGroup) {
 	userHandler := handlers.UserHandler{}
 	users := r.Group("/users")
 	{
+		users.Use(middlewares.Authentication())
 		users.GET("/", userHandler.GetUsers)
 		users.GET("/:id", userHandler.GetUser)
 		users.PUT("/:id", userHandler.UpdateUser)
 		users.DELETE("/:id", userHandler.DeleteUser)
 
-		// users.GET("/:id/recipes", userHandler.GetRecipesByUser)
+		users.GET("/:id/recipes", userHandler.GetRecipesByUser)
+		users.GET("/:id/reviews", userHandler.GetReviewsByUser)
 		// users.GET("/:id/likes", userHandler.GetLikesByUser)
-		// users.GET("/:id/reviews", userHandler.GetReviewsByUser)
 	}
 }
 
@@ -66,7 +69,7 @@ func RecipeRouter(r *gin.RouterGroup) {
 	IngredientHandler := handlers.IngredientHandler{}
 	recipes := r.Group("/recipes")
 	{
-		recipes.Use(middlewares.Authentication())
+		recipes.Use(middlewares.Authentication(), middlewares.AllowedRole("admin"))
 		recipes.POST("/", recipeHandler.CreateRecipe)
 		recipes.GET("/", recipeHandler.GetRecipes)
 		recipes.GET("/:id", recipeHandler.GetRecipe)
