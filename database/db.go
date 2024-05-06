@@ -29,7 +29,7 @@ func Init(config *config.Config) {
 	}
 
 	DB.Logger = logger.Default.LogMode(logger.Info)
-	AutoMigrate()
+	// AutoMigrate()
 }
 
 func AutoMigrate() {
