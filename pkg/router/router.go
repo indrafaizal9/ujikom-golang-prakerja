@@ -10,6 +10,10 @@ import (
 func SetupRouter() *gin.Engine {
 	router := gin.Default()
 	r := router.Group("/api")
+
+	appHandler := handlers.AppHandler{}
+	r.GET("", appHandler.Run)
+
 	AuthRouter(r)
 	UserRouter(r)
 	UserProfile(r)
