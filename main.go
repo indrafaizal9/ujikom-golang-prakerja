@@ -7,10 +7,7 @@ import (
 )
 
 func Init() {
-	config, err := config.LoadConfig()
-	if err != nil {
-		panic(err)
-	}
+	config := config.LoadConfig()
 	database.Init(&config)
 }
 
