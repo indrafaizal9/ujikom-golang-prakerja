@@ -84,14 +84,13 @@ func (r *RecipeService) GetRecipe(c *gin.Context, id int) {
 
 	recipeResource := models.RecipeResource{}
 	resources.RecipeMake(recipe, &recipeResource)
-
 	IngredientService := IngredientService{}
 	Ingredient, err := IngredientService.IngredientsGet(c, recipe.ID)
+	
 	if err != nil {
 		helpers.ResBadRequest(c, err.Error())
 		return
 	}
-
 	recipeResource.Ingredients = Ingredient
 	helpers.ResOK(c, recipeResource)
 }
@@ -570,7 +569,14 @@ func (r *RecipeService) SearchRecipes(c *gin.Context, request models.SearchRecip
 	db := database.DB
 
 	recipes := []models.Recipe{}
-	err := db.Where("name LIKE ? OR tag LIKE", "%"+request.Name+"%", "%"+request.Tags+"%").Find(&recipes).Error
+	query := db.Where("is_published = ?", true)
+	if request.Name != "" {
+		query = query.Where("name LIKE ?", "%"+request.Name+"%")
+	} else if request.Tags != "" {
+		query = query.Where("tags LIKE ?", "%"+request.Tags+"%")
+	}
+	err := query.Find(&recipes).Error
+
 	if err != nil {
 		helpers.ResBadRequest(c, err.Error())
 		return

@@ -227,7 +227,10 @@ func (r *RecipeHandler) DeleteLabel(c *gin.Context) {
 }
 
 func (r *RecipeHandler) SearchRecipe(c *gin.Context) {
-	searchModel := models.SearchRecipe{}
+	searchModel := models.SearchRecipe{
+		Name: c.Query("name"),
+		Tags: c.Query("tags"),
+	}
 	helpers.StructBinder(c, &searchModel)
 
 	_, errCreate := helpers.ValidateStruct(searchModel)
