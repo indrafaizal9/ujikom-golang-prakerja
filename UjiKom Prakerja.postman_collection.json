@@ -1,0 +1,1493 @@
+{
+	"info": {
+		"_postman_id": "eed26827-7a62-42c7-a4eb-66fe6abb2c7e",
+		"name": "UjiKom Prakerja",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15925200",
+		"_collection_link": "https://orange-star-878399.postman.co/workspace/Smartfarm~a594c88a-78b5-4046-8319-d43f6b6e7f8c/collection/15925200-eed26827-7a62-42c7-a4eb-66fe6abb2c7e?action=share&source=collection_link&creator=15925200"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"pm.collectionVariables.set(\"token\", jsonData.data.token);",
+									"// pm.environment.set(\"token\", sonData.data.token)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"admins\",\r\n    \"password\": \"admins\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"user01\",\r\n    \"password\":\"user01\",\r\n    \"role\": \"user\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ME",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Recipe",
+			"item": [
+				{
+					"name": "Ingredient",
+					"item": [
+						{
+							"name": "Add Into Recipe",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"garam\",\r\n    \"description\": \"garam kapur himalayas\",\r\n    \"amount\":\"1\",\r\n    \"unit\":\"kwintal\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/recipes/:id/ingredients",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"ingredients"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "5a85f913-1981-407c-aea6-8cb6c0f35340"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Ingredients",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"garam\",\r\n    \"description\": \"garam kapur himalayas\",\r\n    \"amount\":\"1\",\r\n    \"unit\":\"kilo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/recipes/:id/ingredients/:ingredient_id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"ingredients",
+										":ingredient_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "91039af7-5235-4021-8954-e849fc01758a"
+										},
+										{
+											"key": "ingredient_id",
+											"value": "27",
+											"uuid": "ba11b448-9bb1-4880-8ccf-455d237ac80f"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Form Recipe",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/:id/ingredients/:ingredient_id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"ingredients",
+										":ingredient_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "f6798bad-c061-4f5a-8bbd-996a60d60c50"
+										},
+										{
+											"key": "ingredient_id",
+											"value": "27",
+											"uuid": "321669fb-d55e-4ba2-b22a-a245a15e212c"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Review",
+					"item": [
+						{
+							"name": "Create Reivew",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rating\":2,\r\n    \"review\":\"Terlalu manis untuk sebuah manisan garam\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/recipes/:id/reviews",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "b774bcee-b294-42fc-a9f8-0e100a7eb8e5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reviews",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/:id/reviews",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "efe7c418-002e-46d1-9268-5906bf3f096c"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Review",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rating\":2,\r\n    \"review\":\"Terlalu manis untuk sebuah manisan garam\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/recipes/:id/reviews/:review_id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"reviews",
+										":review_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "dc6a32dd-a730-416b-b5ba-1965fe339581"
+										},
+										{
+											"key": "review_id",
+											"value": "",
+											"uuid": "ea69e29e-c5a7-4812-b22e-0e4e24720fff"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Review",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/:id/reviews/:review_id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"reviews",
+										":review_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "",
+											"uuid": "5ec336b0-5b2c-444d-bba4-20743fd2eb68"
+										},
+										{
+											"key": "review_id",
+											"value": "",
+											"uuid": "cbc4567e-3f6b-4c9e-af3c-98bd66efd261"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tags and Label",
+					"item": [
+						{
+							"name": "Tags",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tags",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/tags/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										"tags",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "ff5c0f39-d9cd-48e0-8f03-d286030760bc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Tags",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"beef\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/recipes/tags",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										"tags"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Label",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/labels",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										"labels"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Label",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/labels/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										"labels",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2",
+											"uuid": "58a84366-b8e8-4795-b096-1fafe6be48d6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Label",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Vegan\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/recipes/labels",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										"labels"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Recipe",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ubur-Ubur Colo-Colo\",\r\n    \"description\": \"Makanan ini adalah makanan khas dar laut\",\r\n    \"prep_time\": \"1\",\r\n    \"cook_time\": \"10\",\r\n    \"total_time\": \"11\",\r\n    \"serving\": \"3\",\r\n    \"difficulty\": \"hard\",\r\n    \"tags\": \"\",\r\n    \"is_published\": true,\r\n    \"instructions\": \"qwertyuiop[sdfghjkl;zxcvbnm,\",\r\n    \"ingredients\": [\r\n        {\r\n            \"name\": \"bawang bombay\",\r\n            \"description\": \"bawang harus dari india!!\",\r\n            \"amount\": \"1\",\r\n            \"unit\": \"kg\"\r\n        },\r\n        {\r\n            \"name\": \"garam balok\",\r\n            \"description\": \"garam pink dari himalaya asli\",\r\n            \"amount\": \"4\",\r\n            \"unit\": \"kg\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/recipes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recipe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recipes/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"uuid": "d1afd7bb-837f-4add-b062-842edcdd1d9c"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All My",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recipes/my",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipes",
+								"my"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recipe",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/recipes/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"uuid": "5de3f5cd-b575-4f2f-a6e4-3da07595e369"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recipe",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/recipes/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"recipes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1",
+									"uuid": "c40d04c6-55ad-4f0a-9bcb-2d868000e3f8"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "Recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/recipes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recipe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/recipes/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"recipes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3",
+									"uuid": "1c3f0088-33fd-4cab-af41-63f7fec1f734"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recipe Reviws",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/recipes/:id/reviews",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"recipes",
+								":id",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"uuid": "6f8cdee2-162c-4d93-8573-716359bdea5d"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/search?name=Colo",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"search"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Colo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Collection",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/public/collections",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"public",
+								"collections"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Master",
+			"item": [
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "All User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}users/",
+									"host": [
+										"{{url}}users"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "4",
+											"uuid": "05f15220-47a0-4e70-b6bb-561c39f36753"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\" : \"indraaaa\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/users/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "8252486f-9ed9-46dc-854c-a61e4f36605c"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "User",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "c26f20fc-ba4d-4863-89cc-49dc71470dbb"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recipes",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/users/:id/recipes",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"users",
+										":id",
+										"recipes"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "0",
+											"uuid": "94dc6577-5b64-4806-9aa9-11f9b1536280"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Recipe",
+					"item": [
+						{
+							"name": "All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recipe",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "be202c59-5623-479a-acd8-fbd62b3c747c"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recipe",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Manisan Garam\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/recipes/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "5aa41d53-5f02-43e3-89c1-6b398138c554"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Recipe",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "6ac75388-39f8-45e9-a0ef-824703f6d67a"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Review",
+					"item": []
+				},
+				{
+					"name": "Review",
+					"item": [
+						{
+							"name": "Reviews",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/:id/reviews",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"reviews"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "ac5ec574-6c28-44e2-bf61-648157201be0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Review",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"rating\":2,\r\n    \"review\":\"Terlalu manis untuk sebuah manisan garam\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/recipes/:id/reviews/:review_id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"reviews",
+										":review_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "80cfedbc-c0a5-47cb-8939-c4612e0ca8bd"
+										},
+										{
+											"key": "review_id",
+											"value": "",
+											"uuid": "b56aed60-e1a7-4bc8-9c41-38ea354134ff"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Review",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/recipes/:id/reviews/:review_id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"recipes",
+										":id",
+										"reviews",
+										":review_id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "",
+											"uuid": "d261c6ad-cf47-454b-9cb7-03e0a5659f6d"
+										},
+										{
+											"key": "review_id",
+											"value": "",
+											"uuid": "d8b8a193-af64-41c8-896d-8945d400163f"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Profile",
+					"item": [
+						{
+							"name": "Profiles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/profile/all",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Profile",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    // \"full_name\": \"Lebah Ganteng\",\r\n    // \"email\" : \"handwome.bee@gmail.com\",\r\n    // \"gender\":\"M\",\r\n    // \"address\":\"lebahgantengmovie.com\",\r\n    \"photo\":\"bee.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/profile/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										""
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Collection",
+					"item": [
+						{
+							"name": "Collections",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"lagi ngirit\",\r\n    \"description\" : \"menu menu yang cocok pas lagi bokek\",\r\n    \"public\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/profile/collection",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										"collection"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Collection",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/profile/collection/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										"collection",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "9c1a75b3-07cf-454f-8b11-b349c5c386c4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All Collections",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/profile/collection/all",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										"collection",
+										"all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"description": "This Folder only accessible for Admin"
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Collection",
+					"item": [
+						{
+							"name": "My Collection",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/profile/collection",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										"collection"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Collections",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"lagi ngirit\",\r\n    \"description\" : \"menu menu yang cocok pas lagi bokek\",\r\n    \"public\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/profile/collection",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										"collection"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Collection",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    // \"name\":\"lagi ngiritttttttt\",\r\n    // \"description\" : \"menu menu yang cocok pas lagi bokek\",\r\n    \"public\": true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/profile/collection/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										"collection",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "132c8524-9145-497f-90a3-0c72a2c122ce"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Collection",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/profile/collection/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"profile",
+										"collection",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "1",
+											"uuid": "e64c9c22-19f4-4250-ba2d-9d5d942876c2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Recipe Collection"
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/profile/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"full_name\": \"Lebah Ganteng\",\r\n    \"email\" : \"handwome.bee@gmail.com\",\r\n    \"gender\":\"M\",\r\n    \"address\":\"lebahgantengmovie.com\",\r\n    \"photo\":\"handome.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/profile/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // \"full_name\": \"Lebah Ganteng\",\r\n    // \"email\" : \"handwome.bee@gmail.com\",\r\n    // \"gender\":\"M\",\r\n    // \"address\":\"lebahgantengmovie.com\",\r\n    \"photo\":\"bee.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/profile/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}",
+					"host": [
+						"{{url}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "localhost:8080/api",
+			"type": "string"
+		}
+	]
+}
