@@ -13,9 +13,9 @@ type Config struct {
 	AppSecret      string `mapstructure:"APP_SECRET"`
 }
 
-func LoadConfig(path string) (config Config, err error) {
-	viper.AddConfigPath(path)
-	viper.SetConfigType("ENV")
+func LoadConfig() (config Config, err error) {
+	viper.SetConfigFile(".ENV")
+	viper.SetConfigType("env")
 	viper.AutomaticEnv()
 	err = viper.ReadInConfig()
 	if err != nil {
